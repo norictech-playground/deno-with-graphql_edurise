@@ -1,10 +1,11 @@
-import { serve } from 'https://deno.land/std/http/server.ts'
+import { Application } from 'https://deno.land/x/oak/mod.ts'
+import { graphql } from 'https://cdn.pika.dev/graphql@^15.1.0'
+import router from './router.ts'
 
-const server = serve({ port: 3000 })
-console.log(`App running on port 3000`)
+const app = new Application()
 
-for await (const req of server) {
-    req.respond({
-        body: 'hello'
-    })
-}
+app.use(router.routes())
+app.use(router.allowedMethods())
+
+console.log(`Server running on port 4000`)
+await app.listen({ port: 4000 })
